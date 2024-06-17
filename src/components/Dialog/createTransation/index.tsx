@@ -88,9 +88,6 @@ export function DialogCreatTask({
             </Input.Wrapper>
           </Input.Root>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-  {/*           <Label className="cursor-pointer" id="transationType">
-
-            </Label> */}
             <label className="cursor-pointer" id="transationType">
               <input
                 type="radio"
@@ -107,7 +104,7 @@ export function DialogCreatTask({
                 <div className="flex flex-col gap-1">
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold uppercase  peer-checked:text-gray-100 flex justify-center gap-2">
-                      <ArrowUp className="size-4 peer-checked:text-gray-100" />
+                      <ArrowUp className="size-4 text-green-700 peer-checked:text-gray-100" />
                       <span>Entrada</span>
                     </p>
                     <div>

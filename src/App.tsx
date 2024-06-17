@@ -1,6 +1,4 @@
 import {
-  ArrowDown,
-  ArrowUp,
   CircleArrowDown,
   CircleArrowUp,
   DollarSign,
@@ -17,10 +15,6 @@ function App() {
   const [transation, setTransation] = useState<Transation[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [search, setSearct] = useState('')
-  const formatterNumber = new Intl.NumberFormat("pt-AO", {
-    style: "currency",
-    currency: "AOA",
-  });
 
   function onClose() {
     setIsModalOpen(false);
@@ -29,15 +23,10 @@ function App() {
     setIsModalOpen(true);
   }
 
-  function SaveInstorage(){
-    localStorage.setItem('transation', JSON.stringify(transation))
-  }
 
   function onCreateTransation(newTransations: Transation) {
-    console.log(newTransations);
     setTransation((prev) => [...prev, newTransations]);
     onClose();
-    SaveInstorage()
   }
 
 
@@ -57,11 +46,6 @@ function App() {
       return convertAmountToCurrency(currentTotal)
   }
 
-{
-  /* max-width: 1120px; */
-  /* margin: 0 auto; */
-  /* padding: 2.5rem 1rem; */
-}
   return (
     <main className="w-full mx-auto min-h-screen">
       <div className="flex flex-col">
@@ -78,7 +62,7 @@ function App() {
 
 
         <section className="w-full -mt-12 px-8 py-4">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-3 gap-4">
             <Card.Root>
               <Card.Wrapper>
                 <Card.Content title="Entrada" amount={findTotal(TransationType.inComing)} signal="+" />
