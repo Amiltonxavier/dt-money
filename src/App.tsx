@@ -69,7 +69,7 @@ function App() {
           <span>Logo</span>
           <button
             onClick={onOpenModal}
-            className="bg-green-700 font-semibold px-4 py-2 h-14 text-gray-100 rounded hover:bg-green-700/80"
+            className="bg-green-700 font-semibold px-4 py-2 h-14 text-gray-100 rounded hover:bg-green-700/80 outline-none focus-within:ring-2 focus-within:ring-blue-700"
             type="button"
           >
             Nova Transação
@@ -93,7 +93,7 @@ function App() {
             </Card.Root>
             <Card.Root className="bg-green-700">
               <Card.Wrapper>
-                <Card.Content title={"Total"} amount={findTotal()}  />
+                <Card.Content title={"Total"} amount={findTotal()} className="text-gray-100"  />
               </Card.Wrapper>
               <Card.Icon icon={DollarSign} className="text-zinc-100" />
             </Card.Root>
