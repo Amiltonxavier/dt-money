@@ -1,13 +1,18 @@
 import {
   ArrowDown,
   ArrowUp,
+  CircleArrowDown,
+  CircleArrowUp,
   DollarSign,
   ExternalLink,
 } from "lucide-react";
 import { ChangeEvent, useState } from "react";
 import { Transation, TransationType } from "./type";
 import { DialogCreatTask } from "./components/Dialog/createTransation";
-
+import * as Card from "./components/Card";
+import * as Input from "./components/form/Input";
+import * as Tables from "./components/table";
+import { convertAmountToCurrency, convertDate } from "./utils";
 function App() {
   const [transation, setTransation] = useState<Transation[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,129 +40,119 @@ function App() {
     SaveInstorage()
   }
 
-  function convertAmountToCurrency(amount: number) {
-    return formatterNumber.format(amount);
-  }
+
 
   function onSearch(e: ChangeEvent<HTMLInputElement>){
     e.preventDefault()
-    setSearct(e.target.value)
-    
+    setSearct(e.target.value) 
   }
-
   const filterData = transation.filter((item) => item.description.toLowerCase().includes(search.toLowerCase()) || item.date.toLocaleString().includes(search.toLowerCase()) || item.transationType.toLowerCase().includes(search.toLowerCase())) 
 
-  function findTotal(type: string){
-      return filterData.filter((item) => item.transationType.toLowerCase().includes(type.toLowerCase()))
+  function findTotal(type?: string) {
+      if(!type){
+        return convertAmountToCurrency(transation.reduce((total, item) => total + item.amount, 0))
+      }
+       const currentTotal = filterData.filter((item) => item.transationType.toLowerCase().includes(type.toLowerCase()))
       .reduce((total, item) => total + item.amount, 0 )
+      return convertAmountToCurrency(currentTotal)
   }
 
+{
+  /* max-width: 1120px; */
+  /* margin: 0 auto; */
+  /* padding: 2.5rem 1rem; */
+}
   return (
-    <main className=" w-full min-h-screen">
+    <main className="w-full mx-auto min-h-screen">
       <div className="flex flex-col">
-        <section className=" bg-gray-900 h-40 w-full flex justify-between px-8 py-12">
+        <section className=" bg-gray-121214 h-40 w-full flex justify-between px-8 py-12">
           <span>Logo</span>
           <button
             onClick={onOpenModal}
-            className="bg-green-700 font-semibold px-4 py-2 text-gray-100 rounded hover:bg-green-700/80"
+            className="bg-green-700 font-semibold px-4 py-2 h-14 text-gray-100 rounded hover:bg-green-700/80"
             type="button"
           >
             Nova Transação
           </button>
         </section>
 
+
         <section className="w-full -mt-12 px-8 py-4">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-            <div className="flex justify-between p-4 bg-zinc-800 rounded">
-              <div className="flex flex-col gap-2">
-                <span className="mb-1 text-base font-medium">Entradas</span>
-                <span>
-                  <h4 className="text-xl text-gray-100">{formatterNumber.format(findTotal(TransationType.inComing))}</h4>
-                  <span className="text-sm text-zinc-400">
-                    Última entrada 20/05/2024
-                  </span>
-                </span>
-              </div>
-              <ArrowUp className="text-green-700 size-6" />
-            </div>
-            <div className="flex justify-between p-4 bg-zinc-800 rounded">
-              <div className="flex flex-col gap-2">
-                <span className="mb-1 text-base font-medium">Saídas</span>
-                <span>
-                  <h4 className="text-xl text-gray-100">{formatterNumber.format(findTotal(TransationType.outComing))}</h4>
-                  <span className="text-sm text-zinc-400">
-                    Última Saída 20/05/2024
-                  </span>
-                </span>
-              </div>
-              <ArrowDown className="text-red-700 size-6" />
-            </div>
-            <div className="bg-green-700 flex justify-between p-4 rounded">
-              <div className="flex flex-col gap-2">
-                <span className="mb-1 text-base font-medium text-gray-100">
-                  Total
-                </span>
-                <span>
-                  <h4 className="text-xl text-gray-100">R$ 3.200,00</h4>
-                  <span className="text-sm text-gray-100">
-                    De 20/05/2024 até 20/10/2025
-                  </span>
-                </span>
-              </div>
-              <DollarSign className="text-zinc-100 size-6" />
-            </div>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <Card.Root>
+              <Card.Wrapper>
+                <Card.Content title="Entrada" amount={findTotal(TransationType.inComing)} signal="+" />
+              </Card.Wrapper>
+              <Card.Icon icon={CircleArrowUp} className="text-green-700" />
+            </Card.Root>         
+            <Card.Root>
+              <Card.Wrapper>
+                <Card.Content title="Saída" amount={findTotal(TransationType.outComing)} signal="-" />
+              </Card.Wrapper>
+              <Card.Icon icon={CircleArrowDown} className="text-red-700" />
+            </Card.Root>
+            <Card.Root className="bg-green-700">
+              <Card.Wrapper>
+                <Card.Content title={"Total"} amount={findTotal()}  />
+              </Card.Wrapper>
+              <Card.Icon icon={DollarSign} className="text-zinc-100" />
+            </Card.Root>
           </div>
         </section>
+        {
+          transation.length === 0 ? <p className="text-center text-gray-300">Nenhuma transação registrada</p>
+          :
         <section className="px-8 py-4 flex flex-col gap-4 space-y-4">
           <h4 className="text-lg">Transações</h4>
           <div className="mt-2">
-            <input
-              type="search"
-              name=""
-              id="search"
-              onChange={onSearch}
-              className="w-full px-2 py-2 outline-none ring-0 rounded bg-gray-800 focus-within:ring-2 focus-within:ring-blue-500"
-              placeholder="Busque por uma transação"
-            />
+          <Input.Root>
+              <Input.Control
+               type="search"
+               id="search"
+               onChange={onSearch}
+               className="w-full px-2 py-4 text-base outline-none ring-0 rounded  focus-within:ring-2 focus-within:ring-blue-500"
+               placeholder="Busque por uma transação"
+              />
+          </Input.Root>
           </div>
           <article className="rounded">
-            <table className="w-full table-auto min-w-full leading-normal rounded">
-              <tbody className="w-full">
-                {filterData.sort((a, b) =>b.date.getTime() - a.date.getTime()).map((item, index) => (
-                  <tr
+            <Tables.Root>
+              <Tables.Tbody>
+                {filterData.sort((a, b) =>b.date.getTime() - a.date.getTime()).map((item) => (
+                  <Tables.Row
                     key={item.id}
-                    className=" bg-gray-800 rounded mb-2 hover:bg-transparent/95 cursor-pointer"
                   >
-                    <td className="py-3 px-4 text-left text-gray-300">
+                    <Tables.Cell className="font-semibold rounded-tl-md round-bl-md">
                       {item.description}
-                    </td>
-                    <td
-                      className={`p-4 text-left  ${
+                    </Tables.Cell>
+                    <Tables.Cell
+                      className={`${
                         item.transationType.toLowerCase().includes(TransationType.outComing.toLowerCase())
                           ? "text-red-700"
                           : "text-green-700"
-                      } flex gap-2`}
+                      }`}
                     >
-                      <span>{convertAmountToCurrency(item.amount)}</span>
-                    </td>
-                    <td className="text-sm py-3 px-4 text-left text-gray-400 ">
+                      <span>{item.transationType.toLowerCase().includes(TransationType.outComing.toLowerCase()) ? "-" : "+"} { convertAmountToCurrency(item.amount)}</span>
+                    </Tables.Cell>
+                    <Tables.Cell>
                       {item.category}
-                    </td>
-                    <td className="text-sm py-3 px-4 text-left text-gray-400 ">
+                    </Tables.Cell>
+                    <Tables.Cell>
                       {item.transationType}
-                    </td>
-                    <td className="text-sm py-3 px-4 text-left text-gray-400 ">
-                      {item.date.toString()}
-                    </td>
-                    <td className="text-sm py-3 px-4 text-left text-blue-500">
+                    </Tables.Cell>
+                    <Tables.Cell>
+                      {convertDate(item.date)}
+                    </Tables.Cell>
+                    <Tables.Cell className="rounded-tr-md round-br-md">
                       <ExternalLink />
-                    </td>
-                  </tr>
+                    </Tables.Cell>
+                  </Tables.Row>
                 ))}
-              </tbody>
-            </table>
+              </Tables.Tbody>
+            </Tables.Root>
           </article>
         </section>
+        }
       </div>
       {isModalOpen && (
         <DialogCreatTask

@@ -3,6 +3,11 @@ import { Dialog } from "..";
 import { Transation, TransationType } from "../../../type";
 import { ArrowDown, ArrowUp, CheckCircle2, DollarSign } from "lucide-react";
 import { CONSTANTS } from "../../../constants";
+import * as Input  from "../../form/Input";
+import * as Select  from "../../form/Select";
+import {Root} from "../../form/Root";
+import { Label } from "../../form/Label";
+
 
 type DialogTaskProps = {
   isOpen: boolean;
@@ -43,52 +48,49 @@ export function DialogCreatTask({
       <div className="flex flex-col gap-4">
         <h4 className="font-semibold text-xl">Transação</h4>
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-          <div className="flex flex-col gap-2">
-            <label htmlFor="name">Descrição</label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              placeholder="Descrição da Transação"
-              className="w-full p-2 bg-transparent border border-zinc-700 rounded ring-0 focus-within:ring-2 focus-within:ring-blue-500 outline-none"
-            />
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label htmlFor="category">Categoria</label>
-            <select
+        <Root>
+            <Label>Descrição</Label>
+              <Input.Control
+                type="text"
+                name="name"
+                id="name"
+                placeholder="Descrição da Transação"
+                className="focus-within:ring-2 ring-blue-500"
+              />
+          </Root>
+          
+          <Root>
+            <Label htmlFor="category">Categoria</Label>
+            <Select.Trigger
               name="category"
               id="category"
-              className="p-2 rounded bg-transparent ring-0 focus-within:ring-2 focus-within:ring-blue-500 border border-zinc-700 outline-none"
             >
-              <option disabled selected>
-                Seleciona uma categoria para a transação
-              </option>
+              <Select.Option> Seleciona uma categoria para a transação</Select.Option>
               {CONSTANTS.CATEGORY.map((item) => (
-                <option key={item.id} value={item.name}>
+                <Select.Option key={item.id} value={item.name}>
                   {item.name}
-                </option>
+                </Select.Option>
               ))}
-            </select>
-          </div>
-
-          <div className="flex flex-col gap-2">
-            <label htmlFor="amount">Quantia</label>
-            <div className="flex justify-center items-center rounded border border-zinc-700 ring-0 focus-within:ring-2  focus-within:ring-blue-500 outline-none">
-              <span className="">
-                <DollarSign className="size-4 m-2" />
-              </span>
-              <input
+            </Select.Trigger>
+          </Root>
+          <Input.Root>
+            <Input.Label>Quantia</Input.Label>
+            <Input.Wrapper>
+              <Input.Icon icon={DollarSign} />
+              <Input.Control
                 type="number"
                 min={0}
                 name="amount"
                 id="amount"
-                placeholder="Valor de entrada"
-                className="w-full p-2 bg-transparent rounded outline-none"
+                placeholder="Valor de entrada" 
+                className=""
               />
-            </div>
-          </div>
+            </Input.Wrapper>
+          </Input.Root>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+  {/*           <Label className="cursor-pointer" id="transationType">
+
+            </Label> */}
             <label className="cursor-pointer" id="transationType">
               <input
                 type="radio"
@@ -142,7 +144,7 @@ export function DialogCreatTask({
             </label>
           </div>
           <div>
-            <button className="mt-2 px-2 py-3 outline-none focus-within:ring-2 focus-within:ring-blue-500 ring-0 bg-green-700 rounded text-gray-100 w-full block">
+            <button className="mt-2 px-2 py-3 outline-none focus-within:ring-2 focus-within:ring-blue-500 ring-0 bg-green-700 rounded text-gray-100 w-full block font-bold">
               Cria nova transação
             </button>
           </div>
