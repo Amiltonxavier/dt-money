@@ -10,13 +10,11 @@ import { Label } from "../../form/Label";
 
 
 type DialogTaskProps = {
-  isOpen: boolean;
   onClose: () => void;
   onCreateTransation: (newTransations: Transation) => void;
 };
 
 export function DialogCreatTask({
-  isOpen,
   onClose,
   onCreateTransation,
 }: DialogTaskProps) {
@@ -44,7 +42,7 @@ export function DialogCreatTask({
   }
 
   return (
-    <Dialog isOpen={isOpen} onClose={onClose}>
+    <Dialog  onClose={onClose}>
       <div className="flex flex-col gap-4">
         <h4 className="font-semibold text-xl">Transação</h4>
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">

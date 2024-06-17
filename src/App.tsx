@@ -47,7 +47,7 @@ function App() {
   }
 
   return (
-    <main className="w-full mx-auto min-h-screen">
+    <main className=" mx-auto min-h-screen w-full flex flex-col gap-4">
       <div className="flex flex-col">
         <section className=" bg-gray-121214 h-40 w-full flex justify-between px-8 py-12">
           <span>Logo</span>
@@ -61,7 +61,8 @@ function App() {
         </section>
 
 
-        <section className="w-full -mt-12 px-8 py-4">
+        <section className="max-w-6xl mx-auto w-full">
+          <div className="w-full -mt-12">
           <div className="grid sm:grid-cols-3 gap-4">
             <Card.Root>
               <Card.Wrapper>
@@ -82,11 +83,13 @@ function App() {
               <Card.Icon icon={DollarSign} className="text-zinc-100" />
             </Card.Root>
           </div>
+          </div>
         </section>
         {
           transation.length === 0 ? <p className="text-center text-gray-300">Nenhuma transação registrada</p>
           :
-        <section className="px-8 py-4 flex flex-col gap-4 space-y-4">
+        <section className="max-w-6xl mx-auto w-full">
+          <div className="flex flex-col gap-4 space-y-4">
           <h4 className="text-lg">Transações</h4>
           <div className="mt-2">
           <Input.Root>
@@ -135,12 +138,12 @@ function App() {
               </Tables.Tbody>
             </Tables.Root>
           </article>
+          </div>
         </section>
         }
       </div>
       {isModalOpen && (
         <DialogCreatTask
-          isOpen={isModalOpen}
           onClose={onClose}
           onCreateTransation={onCreateTransation}
         />
