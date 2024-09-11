@@ -1,8 +1,7 @@
-import { ComponentProps } from 'react'
+import type { ComponentProps } from 'react'
 
 type TableProps = ComponentProps<'table'>
 
-export function Root({...props}: TableProps) {
-  return <table {...props} className='w-full table-auto min-w-full leading-normal rounded' />
-  
+export function Root({ ...props }: TableProps) {
+  return <table {...props} className='border-separate border-spacing-y-4 w-full table-auto  leading-normal rounded' />
 }

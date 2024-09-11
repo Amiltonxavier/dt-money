@@ -1,11 +1,11 @@
-import { FormEvent, useState } from "react";
+import { type FormEvent, useState } from "react";
 import { Dialog } from "..";
-import { Transation, TransationType } from "../../../type";
+import { type Transation, TransationType } from "../../../type";
 import { ArrowDown, ArrowUp, CheckCircle2, DollarSign } from "lucide-react";
 import { CONSTANTS } from "../../../constants";
-import * as Input  from "../../form/Input";
-import * as Select  from "../../form/Select";
-import {Root} from "../../form/Root";
+import * as Input from "../../form/Input";
+import * as Select from "../../form/Select";
+import { Root } from "../../form/Root";
 import { Label } from "../../form/Label";
 
 
@@ -21,8 +21,10 @@ export function DialogCreatTask({
   const [selectedType, setSelectedType] = useState<TransationType>(
     TransationType.inComing
   );
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    //await new Promise((resolver) => setTimeout(resolver, 1000))
 
     const formData = new FormData(e.currentTarget);
     const newTransations = {
@@ -30,7 +32,7 @@ export function DialogCreatTask({
       description: formData.get("name") as string,
       category: formData.get("category") as string,
       date: new Date(),
-      transationType: formData.get("transationType") as TransationType, 
+      transationType: formData.get("transationType") as TransationType,
       amount: Number(formData.get("amount")) as number,
     };
 
@@ -42,21 +44,21 @@ export function DialogCreatTask({
   }
 
   return (
-    <Dialog  onClose={onClose}>
+    <Dialog onClose={onClose}>
       <div className="flex flex-col gap-4">
         <h4 className="font-semibold text-xl">Transação</h4>
         <form onSubmit={handleSubmit} className="flex flex-col gap-2">
-        <Root>
+          <Root>
             <Label>Descrição</Label>
-              <Input.Control
-                type="text"
-                name="name"
-                id="name"
-                placeholder="Descrição da Transação"
-                className="focus-within:ring-2 ring-blue-500"
-              />
+            <Input.Control
+              type="text"
+              name="name"
+              id="name"
+              placeholder="Descrição da Transação"
+              className="focus-within:ring-2 ring-blue-500"
+            />
           </Root>
-          
+
           <Root>
             <Label htmlFor="category">Categoria</Label>
             <Select.Trigger
@@ -80,7 +82,7 @@ export function DialogCreatTask({
                 min={0}
                 name="amount"
                 id="amount"
-                placeholder="Valor de entrada" 
+                placeholder="Valor de entrada"
                 className=""
               />
             </Input.Wrapper>
@@ -139,7 +141,9 @@ export function DialogCreatTask({
             </label>
           </div>
           <div>
-            <button className="mt-2 px-2 py-3 outline-none focus-within:ring-2 focus-within:ring-blue-500 ring-0 bg-green-700 rounded text-gray-100 w-full block font-bold">
+            <button
+              type="submit"
+              className="mt-2 px-2 py-3 outline-none focus-within:ring-2 focus-within:ring-blue-500 ring-0 bg-green-700 rounded text-gray-100 w-full block font-bold">
               Cria nova transação
             </button>
           </div>

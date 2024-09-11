@@ -1,14 +1,12 @@
 export enum TransationType {
-    inComing= "Entrada",
-    outComing="Saída"
+  inComing = "Entrada",
+  outComing = "Saída",
 }
-
-
 export type Transation = {
-    id: number | string,
-    description: string,
-    category: string,
-    date: Date,
-    transationType: TransationType,
-    amount: number
-}
+  id: number | string;
+  description: string;
+  category: string;
+  date: Date;
+  transationType: TransationType;
+  amount: number;
+};
