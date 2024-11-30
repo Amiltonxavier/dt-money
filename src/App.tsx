@@ -21,7 +21,12 @@ import { Storage } from "./store";
 function App() {
   const [transation, setTransation] = useState<Transation[]>(() => {
     const storedTransactions = Storage.get()
-    return storedTransactions
+
+
+    return storedTransactions.map(item => ({
+      ...item,
+      date: new Date(item.date), // Converte strings para Date
+    }));
   });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [search, setSearct] = useState('')
@@ -65,10 +70,10 @@ function App() {
     const inComing = filterData.filter((item) => item.transationType.toLowerCase().includes(TransationType.inComing.toLowerCase()))
       .reduce((total, item) => total + item.amount, 0)
 
-      const outComing = filterData.filter((item) => item.transationType.toLowerCase().includes(TransationType.outComing.toLowerCase()))
+    const outComing = filterData.filter((item) => item.transationType.toLowerCase().includes(TransationType.outComing.toLowerCase()))
       .reduce((total, item) => total + item.amount, 0)
 
-      return convertAmountToCurrency(inComing - outComing)
+    return convertAmountToCurrency(inComing - outComing)
   }
 
   return (
