@@ -87,7 +87,7 @@ function App() {
     <main className="mx-auto min-h-screen max-w-[1600px] w-full flex flex-col gap-4">
       <div className="max-h-full overflow-hidden ">
         <div className="flex flex-col gap-5 max-w-full">
-          <section className="bg-gray-121214 h-40 px-8 w-full flex justify-between py-12">
+          <section className="bg-gray-121214 h-40 px-4 sm:px-8 w-full flex justify-between py-12">
             <span>
               <HandCoins className="size-12 text-green-700" />
             </span>
@@ -99,9 +99,9 @@ function App() {
               Nova Transação
             </button>
           </section>
-          <section className="max-w-7xl mx-auto w-full px-4 sm:px-0">
+          <section className="max-w-7xl mx-auto w-full">
             <div className="w-full -mt-16">
-              <div className="grid sm:grid-cols-4 gap-4">
+              <div className="grid sm:grid-cols-4 gap-4 px-4 sm:px-0">
                 <Card.Root>
                   <Card.Wrapper>
                     <Card.Content title="Entrada" amount={findTotal(TransationType.inComing)} signal="+" />
@@ -138,7 +138,7 @@ function App() {
                   <div className="mt-2">
                     <Search onSearch={onSearch} />
                   </div>
-                  <article className="rounded">
+                  <article className="rounded relative overflow-x-auto">
                     <Tables.Root>
                       <Tables.Tbody>
                         {filterData.sort((a, b) => b.date.getTime() - a.date.getTime()).map((item) => (
