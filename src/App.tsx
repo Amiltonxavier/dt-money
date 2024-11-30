@@ -1,4 +1,5 @@
 import {
+  ArrowRightLeft,
   CircleArrowDown,
   CircleArrowUp,
   DollarSign,
@@ -16,8 +17,12 @@ import { DialogDetails } from "./components/Dialog/details";
 import { TranstiontypeBadge } from "./components/ui/transtion-type";
 import { Search } from "./components/Search";
 import { IncomingOutComingBadge } from "./components/ui/incoming-outcoming";
+import { Storage } from "./store";
 function App() {
-  const [transation, setTransation] = useState<Transation[]>([]);
+  const [transation, setTransation] = useState<Transation[]>(() => {
+    const storedTransactions = Storage.get()
+    return storedTransactions
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [search, setSearct] = useState('')
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
@@ -33,6 +38,7 @@ function App() {
 
   function onCreateTransation(newTransations: Transation) {
     setTransation((prev) => [...prev, newTransations]);
+    Storage.save(newTransations)
     onClose();
   }
   function onSearch(e: ChangeEvent<HTMLInputElement>) {
@@ -55,10 +61,20 @@ function App() {
     setSelectItem(id)
   }
 
+  function total() {
+    const inComing = filterData.filter((item) => item.transationType.toLowerCase().includes(TransationType.inComing.toLowerCase()))
+      .reduce((total, item) => total + item.amount, 0)
+
+      const outComing = filterData.filter((item) => item.transationType.toLowerCase().includes(TransationType.outComing.toLowerCase()))
+      .reduce((total, item) => total + item.amount, 0)
+
+      return convertAmountToCurrency(inComing - outComing)
+  }
+
   return (
     <main className="mx-auto min-h-screen max-w-[1600px] w-full flex flex-col gap-4">
-      <div className="max-h-full overflow-hidden">
-        <div className="flex flex-col gap-4 max-w-full">
+      <div className="max-h-full overflow-hidden ">
+        <div className="flex flex-col gap-5 max-w-full">
           <section className="bg-gray-121214 h-40 px-8 w-full flex justify-between py-12">
             <span>
               <HandCoins className="size-12 text-green-700" />
@@ -71,9 +87,9 @@ function App() {
               Nova Transação
             </button>
           </section>
-          <section className="max-w-6xl mx-auto w-full">
+          <section className="max-w-7xl mx-auto w-full">
             <div className="w-full -mt-16">
-              <div className="grid sm:grid-cols-3 gap-4">
+              <div className="grid sm:grid-cols-4 gap-4">
                 <Card.Root>
                   <Card.Wrapper>
                     <Card.Content title="Entrada" amount={findTotal(TransationType.inComing)} signal="+" />
@@ -86,9 +102,15 @@ function App() {
                   </Card.Wrapper>
                   <Card.Icon icon={CircleArrowDown} className="text-red-700" />
                 </Card.Root>
+                <Card.Root>
+                  <Card.Wrapper>
+                    <Card.Content title={"Total de Transações"} amount={findTotal()} className="text-gray-100" />
+                  </Card.Wrapper>
+                  <Card.Icon icon={ArrowRightLeft} className="text-zinc-100" />
+                </Card.Root>
                 <Card.Root className="bg-green-700">
                   <Card.Wrapper>
-                    <Card.Content title={"Total"} amount={findTotal()} className="text-gray-100" />
+                    <Card.Content title={"Total de Transações"} amount={total()} className="text-gray-100" />
                   </Card.Wrapper>
                   <Card.Icon icon={DollarSign} className="text-zinc-100" />
                 </Card.Root>
@@ -98,7 +120,7 @@ function App() {
           {
             transation.length === 0 ? <p className="text-center text-gray-300">Nenhuma transação registrada</p>
               :
-              <section className="max-w-6xl mx-auto w-full">
+              <section className="max-w-7xl mx-auto w-full px-4 sm:px-0">
                 <div className="flex flex-col gap-4 space-y-4">
                   <h4 className="text-lg">Transações</h4>
                   <div className="mt-2">

@@ -1,5 +1,4 @@
-import React from 'react'
-import { Dialog } from '../Dialog'
+/* import { Dialog } from '../Dialog'
 
 type DetailsProps = {
     isOpen: boolean,
@@ -21,3 +20,4 @@ export  function Details({isOpen, onClose}: DetailsProps) {
     </Dialog>
   )
 }
+ */
