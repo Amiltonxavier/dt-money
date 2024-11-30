@@ -46,6 +46,13 @@ function App() {
     Storage.save(newTransations)
     onClose();
   }
+
+  function deleteTransition (id: string | number){
+    const filter = transation.filter((item) => item.id !== id)
+    setTransation(filter)
+    Storage.update(filter)
+    setIsDetailsModalOpen(false)
+  }
   function onSearch(e: ChangeEvent<HTMLInputElement>) {
     e.preventDefault()
     setSearct(e.target.value)
@@ -92,7 +99,7 @@ function App() {
               Nova Transação
             </button>
           </section>
-          <section className="max-w-7xl mx-auto w-full">
+          <section className="max-w-7xl mx-auto w-full px-4 sm:px-0">
             <div className="w-full -mt-16">
               <div className="grid sm:grid-cols-4 gap-4">
                 <Card.Root>
@@ -115,7 +122,7 @@ function App() {
                 </Card.Root>
                 <Card.Root className="bg-green-700">
                   <Card.Wrapper>
-                    <Card.Content title={"Total de Transações"} amount={total()} className="text-gray-100" />
+                    <Card.Content title={"Total"} amount={total()} className="text-gray-100" />
                   </Card.Wrapper>
                   <Card.Icon icon={DollarSign} className="text-zinc-100" />
                 </Card.Root>
@@ -180,6 +187,7 @@ function App() {
         {isDetailsModalOpen && selectItem && (
           <DialogDetails data={filterData.find((item) => item.id === selectItem)!}
             onClose={() => setIsDetailsModalOpen(false)}
+            deleteTransition={deleteTransition}
           />
         )}
       </div>

@@ -1,3 +1,4 @@
+import { Trash2 } from "lucide-react";
 import { Dialog } from "..";
 import type { Transation } from "../../../type";
 import { convertDate } from "../../../utils";
@@ -7,12 +8,14 @@ import { TranstiontypeBadge } from "../../ui/transtion-type";
 
 type DialogDetailsProps = {
     onClose: () => void;
-    data: Transation
+    data: Transation,
+    deleteTransition: (id: string | number) => void;
 };
 
 export function DialogDetails({
     onClose,
-    data
+    data,
+    deleteTransition
 }: DialogDetailsProps) {
 
 
@@ -40,6 +43,14 @@ export function DialogDetails({
                         <dt className="font-bold">Data</dt>
                         <dd className="">{convertDate(data.date)}</dd>
                     </dl>
+                </div>
+                <div className="flex ml-auto">
+                    <button 
+                    type="button" 
+                    className="flex items-center gap-2 border border-zinc-700 hover:border-rose-500 hover:text-white py-2 px-3 rounded hover:bg-rose-500" 
+                    onClick={()=> deleteTransition(data.id)}>
+                        <Trash2 className="" /> Apapgar Transação
+                        </button>
                 </div>
             </div>
         </Dialog>
