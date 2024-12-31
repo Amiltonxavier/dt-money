@@ -10,9 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "appwrite": "^16.0.2",
+    "fetch-appwrite-types": "^2.2.2",
     "lucide-react": "^0.395.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.28.0",
     "tailwind-merge": "^2.3.0"
   },
   "devDependencies": {

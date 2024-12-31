@@ -7,34 +7,29 @@ import * as Input from "../../form/Input";
 import * as Select from "../../form/Select";
 import { Root } from "../../form/Root";
 import { Label } from "../../form/Label";
+import { useUser } from "../../../context/user";
 
-
-
-type DialogTaskProps = {
+type Props = {
   onClose: () => void;
   onCreateTransation: (newTransations: Transation) => void;
 };
 
-export function DialogCreatTask({
-  onClose,
-  onCreateTransation,
-}: DialogTaskProps) {
+export function DialogCreateTransation({ onClose, onCreateTransation }: Props) {
   const [selectedType, setSelectedType] = useState<TransationType>(
-    TransationType.inComing
+    TransationType.inComing,
   );
+  const { user } = useUser();
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    //await new Promise((resolver) => setTimeout(resolver, 1000))
-
     const formData = new FormData(e.currentTarget);
     const newTransations = {
-      id: Math.round((Math.random() * 100) / 2),
       description: formData.get("name") as string,
       category: formData.get("category") as string,
       date: new Date(),
       transationType: formData.get("transationType") as TransationType,
       amount: Number(formData.get("amount")) as number,
+      userId: user?.$id as string,
     };
 
     onCreateTransation(newTransations);
@@ -62,11 +57,11 @@ export function DialogCreatTask({
 
           <Root>
             <Label htmlFor="category">Categoria</Label>
-            <Select.Trigger
-              name="category"
-              id="category"
-            >
-              <Select.Option> Seleciona uma categoria para a transação</Select.Option>
+            <Select.Trigger name="category" id="category">
+              <Select.Option>
+                {" "}
+                Seleciona uma categoria para a transação
+              </Select.Option>
               {CONSTANTS.CATEGORY.map((item) => (
                 <Select.Option key={item.id} value={item.name}>
                   {item.name}
@@ -144,7 +139,8 @@ export function DialogCreatTask({
           <div>
             <button
               type="submit"
-              className="mt-2 px-2 py-3 outline-none focus-within:ring-2 focus-within:ring-blue-500 ring-0 bg-green-700 rounded text-gray-100 w-full block font-bold">
+              className="mt-2 px-2 py-3 outline-none focus-within:ring-2 focus-within:ring-blue-500 ring-0 bg-green-700 rounded text-gray-100 w-full block font-bold"
+            >
               Cria nova transação
             </button>
           </div>

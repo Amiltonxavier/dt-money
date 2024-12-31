@@ -1,6 +1,6 @@
 import { Trash2 } from "lucide-react";
 import { Dialog } from "..";
-import type { Transation } from "../../../type";
+import type { TransationDTO } from "../../../type";
 import { convertDate } from "../../../utils";
 import { IncomingOutComingBadge } from "../../ui/incoming-outcoming";
 import { TranstiontypeBadge } from "../../ui/transtion-type";
@@ -8,17 +8,16 @@ import { TranstiontypeBadge } from "../../ui/transtion-type";
 
 type DialogDetailsProps = {
     onClose: () => void;
-    data: Transation,
-    deleteTransition: (id: string | number) => void;
+    data: TransationDTO,
+    deleteTransition: (id: string) => Promise<void>
 };
 
 export function DialogDetails({
     onClose,
     data,
     deleteTransition
+
 }: DialogDetailsProps) {
-
-
     return (
         <Dialog onClose={onClose}>
             <div className="flex flex-col gap-4">
@@ -26,7 +25,7 @@ export function DialogDetails({
                 <div className="flex w-full">
                     <dl className="grid grid-cols-2 items-start gap-4">
                         <dt className="font-bold">Identificador</dt>
-                        <dd className="">{data.id}</dd>
+                        <dd className="">{data.$id}</dd>
                         <dt className="font-bold">Descrição</dt>
                         <dd className=" block">{data.description}</dd>
                         <dt className="font-bold">Categoria</dt>
@@ -45,12 +44,12 @@ export function DialogDetails({
                     </dl>
                 </div>
                 <div className="flex ml-auto">
-                    <button 
-                    type="button" 
-                    className="flex items-center gap-2 border border-zinc-700 hover:border-rose-500 hover:text-white py-2 px-3 rounded hover:bg-rose-500" 
-                    onClick={()=> deleteTransition(data.id)}>
+                    <button
+                        type="button"
+                        className="flex items-center gap-2 border border-zinc-700 hover:border-rose-500 hover:text-white py-2 px-3 rounded hover:bg-rose-500"
+                        onClick={() => deleteTransition(data.$id)}>
                         <Trash2 className="" /> Apapgar Transação
-                        </button>
+                    </button>
                 </div>
             </div>
         </Dialog>

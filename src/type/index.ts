@@ -1,12 +1,14 @@
+import type { Models } from "appwrite";
 export enum TransationType {
-  inComing = "Entrada",
-  outComing = "Saída",
+  inComing = "inComing",
+  outComing = "outComing",
 }
 export type Transation = {
-  id: number | string;
   description: string;
   category: string;
   date: Date;
   transationType: TransationType;
   amount: number;
+  userId: string;
 };
+export type TransationDTO = Transation & Models.Document;
